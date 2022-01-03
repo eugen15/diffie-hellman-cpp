@@ -89,6 +89,7 @@ cmake --build .
 Run the program to start the tests. You can explicitly specify the prime length in bits and the generator. See examples below:
 * ``diffie-hellman-cpp`` (the prime length is 256; the generator is 2)
 * ``diffie-hellman-cpp 512 5`` (the prime length is 512; the generator is 5)
+
 The following tests are performed:
 * Alice LibreSSL DH <-> Bob LibreSSL DH
 * Alice LibreSSL DH <-> Bob LibreSSL BIGNUM
