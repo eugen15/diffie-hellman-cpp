@@ -1,7 +1,7 @@
 
 # Diffie-Hellman CPP
 
-The project goal is to write a C++ Diffie-Hellman implementation compatible with LibreSSL/OpenSSL. There is no any practical profit. I do it just for fun. By compatibility I mean exchanging p, g and the public key without any issues. Then, deriving a correct shared secret on both sides. Initially, I wanted to write my own big number implemented. Unfortunately, it would take too much time. So, for beginning, I decided to use boost cpp_int. It is obviously that the compatibility should be tested. I use LibreSSL for that. I never touched it earlier so decided to play with it.
+The project goal is to write a C++ Diffie-Hellman implementation compatible with LibreSSL/OpenSSL. There is no any practical profit. I do it just for fun. By compatibility I mean exchanging p, g and the public key without any issues. Then, deriving a correct shared secret on both sides. Initially, I wanted to write my own big number implementation. Unfortunately, it would take too much time. So, for beginning, I decided to use boost cpp_int. It is obviously that the compatibility should be tested. I use LibreSSL for that. I had never touched it earlier so decided to play with it.
 
 ## Source code
 See below for the main classes.
