@@ -14,11 +14,11 @@ See below for the main classes.
 ## Building
 The project uses ``std::format``, ``using enum`` and other modern C++ features so you need latest compilers for it. See the links below.
 
-https://en.cppreference.com/w/cpp/compiler_support
-https://docs.microsoft.com/en-us/cpp/overview/visual-cpp-language-conformance
-https://clang.llvm.org/cxx_status.html
+* https://en.cppreference.com/w/cpp/compiler_support
+* https://docs.microsoft.com/en-us/cpp/overview/visual-cpp-language-conformance
+* https://clang.llvm.org/cxx_status.html
 
-You also need CMake, LibreSSL and Boost C++ (headers only). You have to compile LibreSSL. if you do not want to use LibreSSL, you can try OpenSSL 1.x.x. The DH and BIGNUM API should be compatible.  In this case, you may need to change linked library names in the project CMakeLists.txt. Although, anyway, I cannot guarantee it will work.
+You also need CMake, LibreSSL and Boost C++ (headers only). You have to compile LibreSSL. If you do not want to use LibreSSL, you can try OpenSSL 1.x.x. The DH and BIGNUM API should be compatible.  In this case, you may need to change linked library names in the project CMakeLists.txt. Although, anyway, I cannot guarantee it will work.
 
 ### Windows
 VS 2019 v16.10 & v16.11 or later is required. Personally, I use VS 2022. The download link is here https://visualstudio.microsoft.com/vs/community/.
@@ -36,7 +36,7 @@ cmake --install . --config Debug
 ```
 (you can choose either Debug or Release).
 
-Download and unpack the latest Boost C++ if you do not have it on your machine. You can compile if you like but it is not necessary.
+Download and unpack the latest Boost C++ if you do not have it on your machine. You can compile the library if you like but it is not necessary.
 
 Download the project, go to the root and run the following commands:
 ```
@@ -87,13 +87,13 @@ cmake --build .
 
 ## Testing
 Run the program to start the tests. You can explicitly specify the prime length in bits and the generator. See examples below:
-``diffie-hellman-cpp`` (the prime length is 256; the generator is 2)
-``diffie-hellman-cpp 512 5`` (the prime length is 512; the generator is 5)
+* ``diffie-hellman-cpp`` (the prime length is 256; the generator is 2)
+* ``diffie-hellman-cpp 512 5`` (the prime length is 512; the generator is 5)
 The following tests are performed:
-*Alice LibreSSL DH <-> Bob LibreSSL DH
-*Alice LibreSSL DH <-> Bob LibreSSL BIGNUM
-*Alice LibreSSL BIGNUM <-> Bob LibreSSL DH
-*Alice LibreSSL DH <-> Bob Boost cpp_int
-*Alice Boost cpp_int <-> Bob LibreSSL DH
+* Alice LibreSSL DH <-> Bob LibreSSL DH
+* Alice LibreSSL DH <-> Bob LibreSSL BIGNUM
+* Alice LibreSSL BIGNUM <-> Bob LibreSSL DH
+* Alice LibreSSL DH <-> Bob Boost cpp_int
+* Alice Boost cpp_int <-> Bob LibreSSL DH
 
 
