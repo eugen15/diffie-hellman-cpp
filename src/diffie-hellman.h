@@ -8,10 +8,6 @@
 #include <memory>
 #include <string_view>
 
-#include <openssl/bn.h>
-
-#include "libressl-helpers.h"
-
 #include "result.h"
 
 // The Diffie-Hellman interface.
@@ -20,8 +16,9 @@ class DiffieHellman {
 
   enum class Implementation {
     Undefined = 0,
-    LibreSSLDH,   // Based on libressl DH
-    LibreSSLBN,   // Based on libressl BIGNUM
+    OpenSSL,      // Based on OpenSSL DH
+    LibreSSLDH,   // Based on LibreSSL DH
+    LibreSSLBN,   // Based on LibreSSL BIGNUM
     Boost         // Based on boost
   };
 

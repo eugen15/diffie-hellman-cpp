@@ -6,10 +6,22 @@
 
 #include <string>
 #include <string_view>
+#include <type_traits>
 
 #include "result.h"
 
 namespace Base {
+
+/*template <auto fn>
+struct DeleterFromFn {
+  template <typename T>
+  constexpr void operator()(T* arg) const {
+    fn(arg);
+  }
+};*/
+
+template <auto fn>
+using DeleterFromFn = std::integral_constant<decltype(fn), fn>;
 
 // Converts binary data to a hex string.
 std::string ConvertDataToHex(std::string_view data);

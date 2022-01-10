@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.15)
 
 project(diffie-hellman-cpp)
 
+message(STATUS "Use -DUSE_OPENSSL=ON to compile with OpenSSL 3 support instead of LibreSSL.")
 message(STATUS "Use -DINCLUDE_DIRS=\"path1;path2;path3\" to specify additional include directories.")
 message(STATUS "Use -DLIBRARY_DIRS=\"path1;path2;path3\" to specify additional library directories.")
 
@@ -24,13 +25,6 @@ if (WIN32)
   endif()
 
   add_compile_options("/std:c++latest")
-  set(STATIC_RUNTIME_LIBRARY false)
-  if (DEFINED RUNTIME_LIBRARY)
-    string(TOLOWER ${RUNTIME_LIBRARY} RUNTIME_LIBRARY_LC)
-    if (${RUNTIME_LIBRARY} STREQUAL "static")
-      set(STATIC_RUNTIME_LIBRARY true)
-    endif()
-  endif()
 
   option(USE_STATIC_MSVC_RUNTIMES "Use /MT instead of /MD in MSVC" OFF)
   if(USE_STATIC_MSVC_RUNTIMES)
@@ -60,10 +54,7 @@ endif()
 set(SOURCES
   ${SOURCES}
   src/base-helpers.cpp
-  src/libressl-helpers.cpp
   src/diffie-hellman.cpp
-  src/diffie-hellman-libressl-dh.cpp
-  src/diffie-hellman-libressl-bn.cpp
   src/diffie-hellman-boost.cpp
   src/tester.cpp
   src/main.cpp
@@ -73,19 +64,51 @@ set(HEADERS
   ${HEADERS}
   src/result.h
   src/base-helpers.h
-  src/libressl-helpers.h
   src/diffie-hellman.h
-  src/diffie-hellman-libressl-dh.h
-  src/diffie-hellman-libressl-bn.h
   src/diffie-hellman-boost.h
   src/tester.h
 )
 
-add_executable(${CMAKE_PROJECT_NAME} ${SOURCES} ${HEADERS})
-
-if (MSVC)
-  target_link_libraries(${CMAKE_PROJECT_NAME} crypto-47 Bcrypt Ws2_32)
+option(USE_OPENSSL "Use OpenSSL 3.x.x instead of LibreSSL 3.x.x" OFF)
+if(USE_OPENSSL)
+  set(SOURCES
+    ${SOURCES}
+    src/openssl-helpers.cpp
+    src/diffie-hellman-openssl.cpp
+  )
+  set(HEADERS
+    ${HEADERS}
+    src/openssl-helpers.h
+    src/diffie-hellman-openssl.h
+  )
+  add_definitions(-DUSE_OPENSSL)
 else()
-  target_link_libraries(${CMAKE_PROJECT_NAME} crypto pthread)
+  set(SOURCES
+    ${SOURCES}
+    src/libressl-helpers.cpp
+    src/diffie-hellman-libressl-dh.cpp
+    src/diffie-hellman-libressl-bn.cpp
+  )
+  set(HEADERS
+    ${HEADERS}
+    src/libressl-helpers.h
+    src/diffie-hellman-libressl-dh.h
+    src/diffie-hellman-libressl-bn.h
+  )
 endif()
 
+
+add_executable(${CMAKE_PROJECT_NAME} ${SOURCES} ${HEADERS})
+
+if(USE_OPENSSL)
+  if (MSVC)
+    target_link_libraries(${CMAKE_PROJECT_NAME} libcrypto)
+  else()
+  endif()
+else()
+  if (MSVC)
+    target_link_libraries(${CMAKE_PROJECT_NAME} crypto-47 Bcrypt Ws2_32)
+  else()
+    target_link_libraries(${CMAKE_PROJECT_NAME} crypto pthread)
+  endif()
+endif()

@@ -21,27 +21,31 @@ void Tester::Run() {
   using Impl = DiffieHellman::Implementation;
 
   std::vector<std::pair<Impl, Impl>> tests = {
+    {Impl::OpenSSL, Impl::OpenSSL},
     {Impl::LibreSSLDH, Impl::LibreSSLDH},
     {Impl::LibreSSLDH, Impl::LibreSSLBN},
     {Impl::LibreSSLBN, Impl::LibreSSLDH},
+    {Impl::OpenSSL, Impl::Boost},
+    {Impl::Boost, Impl::OpenSSL},
     {Impl::LibreSSLDH, Impl::Boost},
     {Impl::Boost, Impl::LibreSSLDH},
   };
 
   for (const auto& test : tests) {
-    std::cout << "--------------------------------------------------------" << std::endl;
-
     auto alice = DiffieHellman::Create(test.first);
     auto bob = DiffieHellman::Create(test.second);
-    
-    std::string testDescription = std::format("ALICE {} <-> BOB {}",
-      alice->GetImplementaionName(), bob->GetImplementaionName());
-    std::cout << testDescription << std::endl;
+    if (alice && bob) {
+      std::cout << "--------------------------------------------------------" << std::endl;
 
-    auto result = DoTest(alice.get(), bob.get());
+      std::string testDescription = std::format("ALICE {} <-> BOB {}",
+        alice->GetImplementaionName(), bob->GetImplementaionName());
+      std::cout << testDescription << std::endl;
 
-    std::string resultDescription = (result) ? "success" : result.GetDescription();
-    std::cout << "RESULT: " << resultDescription << std::endl << std::endl;
+      auto result = DoTest(alice.get(), bob.get());
+
+      std::string resultDescription = (result) ? "success" : result.GetDescription();
+      std::cout << "RESULT: " << resultDescription << std::endl << std::endl;
+    }
   }
 }
 

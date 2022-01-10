@@ -7,7 +7,7 @@
 
 int main(int argc, char* argv[])
 {
-  int primeLengthInBits = 256;
+  int primeLengthInBits = 512;
   int generator = 2;
 
   try {

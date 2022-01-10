@@ -21,6 +21,6 @@ class Tester final {
   static void PrintObjectLength(std::string_view comment,
     std::tuple<int, int> bitsBytes, const std::string& hex);
 
-  int primeLengthInBits_ = 256;
+  int primeLengthInBits_ = 512;
   int generator_ = 2;
 };
