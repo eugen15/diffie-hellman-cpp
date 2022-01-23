@@ -64,6 +64,7 @@ set(HEADERS
   ${HEADERS}
   src/result.h
   src/base-helpers.h
+  src/primes.h
   src/diffie-hellman.h
   src/diffie-hellman-boost.h
   src/tester.h

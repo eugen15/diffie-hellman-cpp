@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include <chrono>
 #include <iostream>
 #include <format>
 #include <vector>
@@ -54,16 +55,26 @@ Result Tester::DoTest(DiffieHellman* alice, DiffieHellman* bob) {
   
   std::cout << "Generating the prime (may be slow)..." << std::endl;
 
+  std::chrono::high_resolution_clock::time_point primeGenStart =
+    std::chrono::high_resolution_clock::now();
+
   std::string hexPrime, hexGenerator;
   if (!(result = alice->GenerateParameters(primeLengthInBits_, generator_)) ||
       !(result = alice->GetParameters(&hexPrime, &hexGenerator))) {
     return result;
   }
 
+  std::chrono::high_resolution_clock::time_point primeGenEnd =
+    std::chrono::high_resolution_clock::now();
+  std::int64_t primGenSpentMs =
+    std::chrono::duration_cast<std::chrono::milliseconds>(primeGenEnd - primeGenStart).count();  
+
+  std::cout << "ALICE prime generation spent (ms): " << primGenSpentMs << std::endl;
+
   PrintObjectLength("ALICE prime length", alice->GetPrimeLength(), hexPrime);
 
   std::cout << "ALICE prime: " << hexPrime << std::endl;
-  std::cout << "ALICE generator: " << hexGenerator << std::endl;
+  std::cout << "ALICE generator: " << hexGenerator << std::endl;  
 
   std::string aliceHexPrivateKey, aliceHexPublicKey;
   if (!(result = alice->GenerateKeys()) ||
