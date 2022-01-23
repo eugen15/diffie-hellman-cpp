@@ -28,7 +28,7 @@ Result DiffieHellmanLibreSSLBN::GenerateParameters(int primeLengthInBits, int ge
     return {Result::Fail, "Bad generator value."};
   }
 
-  std::unique_ptr<BN_CTX, LibreSSL::BNCtxDeleter> ctx{BN_CTX_new()};
+  std::unique_ptr<BN_CTX, Base::DeleterFromFn<BN_CTX_free>> ctx{BN_CTX_new()};
   if (!ctx) {
     return {Result::Fail, "Could not create the big number context: {}",
       LibreSSL::GetLastErrorString()};
@@ -36,25 +36,25 @@ Result DiffieHellmanLibreSSLBN::GenerateParameters(int primeLengthInBits, int ge
 
   BN_CTX_start(ctx.get());
 
-  std::unique_ptr<BIGNUM, LibreSSL::BNDeleter> bigAdd{BN_CTX_get(ctx.get())};
-  std::unique_ptr<BIGNUM, LibreSSL::BNDeleter> bigRem{BN_CTX_get(ctx.get())};
+  BIGNUM* bigAdd{BN_CTX_get(ctx.get())};
+  BIGNUM* bigRem{BN_CTX_get(ctx.get())};
   if (!bigAdd || !bigRem) {
     return {Result::Fail, "BN_CTX_get failed: {}",
       LibreSSL::GetLastErrorString()};
   }
 
   if (generator == DH_GENERATOR_2) {
-    if (!BN_set_word(bigAdd.get(), 24) || !BN_set_word(bigRem.get(), 11)) {
+    if (!BN_set_word(bigAdd, 24) || !BN_set_word(bigRem, 11)) {
       return {Result::Fail, "BN_set_word failed: {}",
         LibreSSL::GetLastErrorString()};
     }
   } else if (generator == DH_GENERATOR_5) {
-    if (!BN_set_word(bigAdd.get(), 10) || !BN_set_word(bigRem.get(), 3)) {
+    if (!BN_set_word(bigAdd, 10) || !BN_set_word(bigRem, 3)) {
       return {Result::Fail, "BN_set_word failed: {}",
         LibreSSL::GetLastErrorString()};
     }
   } else {
-    if (!BN_set_word(bigAdd.get(), 2) || !BN_set_word(bigRem.get(), 1)) {
+    if (!BN_set_word(bigAdd, 2) || !BN_set_word(bigRem, 1)) {
       return {Result::Fail, "BN_set_word failed: {}",
         LibreSSL::GetLastErrorString()};
     }
@@ -72,7 +72,7 @@ Result DiffieHellmanLibreSSLBN::GenerateParameters(int primeLengthInBits, int ge
       LibreSSL::GetLastErrorString()};
   }
 
-  if (!BN_generate_prime_ex(prime_.get(), primeLengthInBits, 1, bigAdd.get(), bigRem.get(), nullptr)) {
+  if (!BN_generate_prime_ex(prime_.get(), primeLengthInBits, 1, bigAdd, bigRem, nullptr)) {
     return {Result::Fail, "BN_generate_prime_ex failed: {}",
       LibreSSL::GetLastErrorString()};
   }
@@ -133,19 +133,19 @@ Result DiffieHellmanLibreSSLBN::GenerateKeys() {
     return {Result::Fail, "Modulus too large."};
   }
 
-  std::unique_ptr<BN_CTX, LibreSSL::BNCtxDeleter> ctx{BN_CTX_new()};
+  std::unique_ptr<BN_CTX, Base::DeleterFromFn<BN_CTX_free>> ctx{BN_CTX_new()};
   if (!ctx) {
     return {Result::Fail, "Could not create the big number context: {}",
       LibreSSL::GetLastErrorString()};
   }
 
-  std::unique_ptr<BIGNUM, LibreSSL::BNDeleter> privateKey{BN_new()};
+  std::unique_ptr<BIGNUM, Base::DeleterFromFn<BN_free>> privateKey{BN_new()};
   if (!privateKey) {
     return {Result::Fail, "Could not create the private key: {}",
       LibreSSL::GetLastErrorString()};
   }
   
-  std::unique_ptr<BIGNUM, LibreSSL::BNDeleter> publicKey{BN_new()};
+  std::unique_ptr<BIGNUM, Base::DeleterFromFn<BN_free>> publicKey{BN_new()};
   if (!publicKey) {
     return {Result::Fail, "Could not create the public key: {}",
       LibreSSL::GetLastErrorString()};
@@ -193,7 +193,7 @@ Result DiffieHellmanLibreSSLBN::GetPublicKey(std::string* hexPublicKey) const {
 }
 
 static Result CheckPublicKey(BIGNUM* p, BIGNUM* publicKey) {
-  std::unique_ptr<BIGNUM, LibreSSL::BNDeleter> q(BN_new());
+  std::unique_ptr<BIGNUM, Base::DeleterFromFn<BN_free>> q(BN_new());
   if (!q) {
     return {Result::Fail, "BN_new faled: {}", LibreSSL::GetLastErrorString()};
   }
@@ -219,7 +219,7 @@ Result DiffieHellmanLibreSSLBN::DeriveSharedSecret(
     return {Result::Fail, "Modulus too large."};
   }
 
-  std::unique_ptr<BIGNUM, LibreSSL::BNDeleter> peerPublicKey(LibreSSL::ConvertHexToBigNum(hexPeerPublicKey));
+  std::unique_ptr<BIGNUM, Base::DeleterFromFn<BN_free>> peerPublicKey(LibreSSL::ConvertHexToBigNum(hexPeerPublicKey));
   if (!peerPublicKey) {
     return {Result::Fail, "Could not convert the hex data to the public key: {}",
       LibreSSL::GetLastErrorString()};
@@ -229,7 +229,7 @@ Result DiffieHellmanLibreSSLBN::DeriveSharedSecret(
     return result;
   }
 
-  std::unique_ptr<BN_CTX, LibreSSL::BNCtxDeleter> ctx{BN_CTX_new()};
+  std::unique_ptr<BN_CTX, Base::DeleterFromFn<BN_CTX_free>> ctx{BN_CTX_new()};
   if (!ctx) {
     return {Result::Fail, "Could not create the big number context: {}",
       LibreSSL::GetLastErrorString()};
@@ -237,13 +237,13 @@ Result DiffieHellmanLibreSSLBN::DeriveSharedSecret(
 
   BN_CTX_start(ctx.get());
 
-  std::unique_ptr<BIGNUM, LibreSSL::BNDeleter> tmp{BN_CTX_get(ctx.get())};
+  BIGNUM* tmp{BN_CTX_get(ctx.get())};
   if (!tmp) {
     return {Result::Fail, "Could not create the temporary big number: {}",
       LibreSSL::GetLastErrorString()};
   }
 
-  if (!BN_mod_exp(tmp.get(), peerPublicKey.get(), privateKey_.get(), prime_.get(), ctx.get())) {
+  if (!BN_mod_exp(tmp, peerPublicKey.get(), privateKey_.get(), prime_.get(), ctx.get())) {
     return {Result::Fail, "Could not derive the shared secret: {}",
       LibreSSL::GetLastErrorString()};
   }
@@ -256,7 +256,7 @@ Result DiffieHellmanLibreSSLBN::DeriveSharedSecret(
   std::string sharedSecret;
   sharedSecret.resize(sharedSecretSize);
 
-  if (!BN_bn2bin(tmp.get(), static_cast<unsigned char*>(static_cast<void*>(&sharedSecret.front())))) {
+  if (!BN_bn2bin(tmp, static_cast<unsigned char*>(static_cast<void*>(&sharedSecret.front())))) {
     return {Result::Fail, "Could not extract the shared secret: {}",
       LibreSSL::GetLastErrorString()};
   }

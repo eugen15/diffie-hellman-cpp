@@ -12,33 +12,18 @@
 
 namespace LibreSSL {
 
-// std::unique_ptr BIGNUM deleter.
+// BN_free
 // "If a is a NULL pointer, no action occurs."
 // https://man.openbsd.org/BN_new.3
-struct BNDeleter final {
-  void operator()(BIGNUM* bigNum) {
-    BN_free(bigNum);
-  }
-};
 
-// std::unique_ptr DH deleter.
+// DH_free
 // "If dh is a NULL pointer, no action occurs."
 // https://man.openbsd.org/DH_new.3
-struct DHDeleter final {
-  void operator()(DH* dh) {
-    DH_free(dh);
-  }
-};
 
 
-// std::unique_ptr BN_CTX deleter.
+// BM_CTX_free
 // "If c is a NULL pointer, no action occurs."
 // https://man.openbsd.org/BN_CTX_new.3
-struct BNCtxDeleter final {
-  void operator()(BN_CTX* ctx) {    
-    BN_CTX_free(ctx);
-  }
-};
 
 // Gets current thread libressl last error (both numberic and text).
 std::tuple<unsigned long, std::string> GetLastError();

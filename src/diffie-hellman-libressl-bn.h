@@ -41,9 +41,9 @@ class DiffieHellmanLibreSSLBN : public DiffieHellman {
   std::tuple<int, int> GetPublicKeyLength() const override;
 
  private:
-   std::unique_ptr<BIGNUM, LibreSSL::BNDeleter> prime_;
-   std::unique_ptr<BIGNUM, LibreSSL::BNDeleter> generator_;
-   std::unique_ptr<BIGNUM, LibreSSL::BNDeleter> privateKey_;
-   std::unique_ptr<BIGNUM, LibreSSL::BNDeleter> publicKey_;   
+   std::unique_ptr<BIGNUM, Base::DeleterFromFn<BN_free>> prime_;
+   std::unique_ptr<BIGNUM, Base::DeleterFromFn<BN_free>> generator_;
+   std::unique_ptr<BIGNUM, Base::DeleterFromFn<BN_free>> privateKey_;
+   std::unique_ptr<BIGNUM, Base::DeleterFromFn<BN_free>> publicKey_;
 
 };

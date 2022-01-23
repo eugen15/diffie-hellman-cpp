@@ -10,6 +10,7 @@
 #include <openssl/dh.h>
 
 #include "result.h"
+#include "base-helpers.h"
 #include "libressl-helpers.h"
 #include "diffie-hellman.h"
 
@@ -38,6 +39,6 @@ class DiffieHellmanLibreSSLDH : public DiffieHellman {
   std::tuple<int, int> GetPublicKeyLength() const override;
 
  private:
-  std::unique_ptr<DH, LibreSSL::DHDeleter> dh_;
+  std::unique_ptr<DH, Base::DeleterFromFn<DH_free>> dh_;
 
 };

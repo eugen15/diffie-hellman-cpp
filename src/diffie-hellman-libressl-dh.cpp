@@ -9,7 +9,6 @@
 #include <openssl/crypto.h>
 #include <openssl/err.h>
 
-#include "base-helpers.h"
 #include "libressl-helpers.h"
 #include "diffie-hellman-libressl-dh.h"
 
@@ -48,13 +47,13 @@ Result DiffieHellmanLibreSSLDH::GenerateParameters(int primeLengthInBits, int ge
 Result DiffieHellmanLibreSSLDH::SetParameters(std::string_view hexPrime, std::string_view hexGenerator) {
   ERR_clear_error();
 
-  std::unique_ptr<BIGNUM, LibreSSL::BNDeleter> prime(LibreSSL::ConvertHexToBigNum(hexPrime));
+  std::unique_ptr<BIGNUM, Base::DeleterFromFn<BN_free>> prime(LibreSSL::ConvertHexToBigNum(hexPrime));
   if (!prime) {
     return {Result::Fail, "Could not convert the hex data to the prime: {}",
       LibreSSL::GetLastErrorString()};
   }
 
-  std::unique_ptr<BIGNUM, LibreSSL::BNDeleter> generator(LibreSSL::ConvertHexToBigNum(hexGenerator));
+  std::unique_ptr<BIGNUM, Base::DeleterFromFn<BN_free>> generator(LibreSSL::ConvertHexToBigNum(hexGenerator));
   if (!generator) {
     return {Result::Fail, "Could not convert the hex data to the generator: {}",
       LibreSSL::GetLastErrorString()};
@@ -147,7 +146,7 @@ Result DiffieHellmanLibreSSLDH::DeriveSharedSecret(
     std::string_view hexPeerPublicKey, std::string* hexSharedSecret) const {
   ERR_clear_error();
 
-  std::unique_ptr<BIGNUM, LibreSSL::BNDeleter> peerPublicKey(
+  std::unique_ptr<BIGNUM, Base::DeleterFromFn<BN_free>> peerPublicKey(
     LibreSSL::ConvertHexToBigNum(hexPeerPublicKey));
   if (!peerPublicKey) {
     return {Result::Fail, "Could not convert the hex data to the public key: {}",
