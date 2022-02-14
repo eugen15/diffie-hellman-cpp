@@ -1,16 +1,14 @@
-
-
 # Diffie-Hellman CPP
 
-The project goal is to write a C++ Diffie-Hellman implementation compatible with LibreSSL/OpenSSL. There is no any practical profit. I do it just for fun. By compatibility I mean exchanging p, g and the public key in binary or hex form. Then, deriving a correct shared secret on both sides. Initially, I wanted to write my own big number implementation. Unfortunately, it would take too much time. So, for beginning, I decided to use boost cpp_int. The project supports both OpenSSL 3.x.x and LibreSSL 3.x.x to test compatibility.
+This is a C++ Diffie-Hellman implementation based on boost::multiprecision::cpp_int. The output/input data format is compatible with OpenSSL 3.x.x and LibreSSL 3.x.x. So you can exchange the p, g and public key with those libraries to derive the shared secret. The project can be compiled with support of any of the libraries to run some tests. The project is just for fun.
 
 ## Source code
 See below for the main classes.
 * ``DiffieHellman``: The interface for Diffie-Hellman implementations. Also, it provides the factory method to create an appropriate instance.
-* ``DiffieHellmanOpenSSL``: The OpenSSL implementation.
-* ``DiffieHellmanLibreSSLDH``: The typical Diffie-Hellman implementation. It is based on LibreSSL DH functions.
-* ``DiffieHellmanLibreSSLBN``: The intermediate implementation which is based on LibreSSL BIGNUM without the DH functions.
-* ``DiffieHellmanBoost``: The C++ implementation uses boost::multiprecision::cpp_int for big number operations.
+* ``DiffieHellmanOpenSSL``: A typical OpenSSL implementation.
+* ``DiffieHellmanLibreSSLDH``: A typical LibreSSL implementation.
+* ``DiffieHellmanLibreSSLBN``: The intermediate implementation which is based on LibreSSL BIGNUM without using the DH functions.
+* ``DiffieHellmanBoost``: The C++ implementation which uses boost::multiprecision::cpp_int for big number operations.
 * ``Tester``: The tester class.
 
 ## Building
@@ -147,5 +145,3 @@ The following tests are performed if compiled with LibreSSL support:
 * Alice LibreSSL BIGNUM <-> Bob LibreSSL DH
 * Alice LibreSSL DH <-> Bob Boost cpp_int
 * Alice Boost cpp_int <-> Bob LibreSSL DH
-
-
