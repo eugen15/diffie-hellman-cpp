@@ -1,6 +1,6 @@
 # Diffie-Hellman CPP
 
-This is a C++ Diffie-Hellman implementation based on boost::multiprecision::cpp_int. The output/input data format is compatible with OpenSSL 3.x.x and LibreSSL 3.x.x. So you can exchange the p, g and public key with those libraries to derive the shared secret. The project can be compiled with support of any of the libraries to run some tests. The project is just for fun.
+Diffie-Hellman key exchange between OpenSSL 3, LibreSSL 3 and a custom C++ implementation. The custom implementation is based on boost::multiprecision::cpp_int. The project is just for fun. Also, you can use the project as an example of OpenSSL/LibreSSL Diffie-Hellman key exchange. The project can be compiled with either OpenSSL 3 or LibreSSL 3 support.
 
 ## Source code
 See below for the main classes.
