@@ -26,12 +26,6 @@ std::string_view DiffieHellmanOpenSSL::GetImplementaionName() const {
   return "openssl";
 }
 
-struct BNCtxDeleter final {
-  void operator()(BN_CTX* ctx) {
-    BN_CTX_free(ctx);
-  }
-};
-
 Result DiffieHellmanOpenSSL::GenerateParameters(int primeLengthInBits, int generator) {
   ERR_clear_error();
 
@@ -142,7 +136,7 @@ Result DiffieHellmanOpenSSL::GenerateKeys() {
 
   std::unique_ptr<EVP_PKEY_CTX, Base::DeleterFromFn<EVP_PKEY_CTX_free>> keyGenCtx{
     EVP_PKEY_CTX_new_from_pkey(nullptr, domainParamKey.get(), nullptr)};
-  if (!result) {
+  if (!keyGenCtx) {
     return {Result::Fail,
       "Couldn't generate: EVP_PKEY_CTX_new_from_pkey failed: {}",
       OpenSSL::GetLastErrorString()};
