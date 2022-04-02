@@ -1,15 +1,19 @@
 # Diffie-Hellman CPP
 
-Diffie-Hellman key exchange between OpenSSL 3, LibreSSL 3 and a custom C++ implementation. The custom implementation is based on boost::multiprecision::cpp_int. The project is just for fun. Also, you can use the project as an example of OpenSSL/LibreSSL Diffie-Hellman key exchange. The project can be compiled with either OpenSSL 3 or LibreSSL 3 support.
+Diffie-Hellman key exchange between OpenSSL 3, LibreSSL 3 and a custom C++ implementation. The project is just for fun. Also, you can use the project as **an example of OpenSSL/LibreSSL DH/ECDH key exchange**. The project can be compiled with either OpenSSL 3 or LibreSSL 3 support. A custom implementation is not available for Elliptic-curve Diffie–Hellman yet!
 
 ## Source code
 See below for the main classes.
-* ``DiffieHellman``: The interface for Diffie-Hellman implementations. Also, it provides the factory method to create an appropriate instance.
-* ``DiffieHellmanOpenSSL``: A typical OpenSSL implementation.
-* ``DiffieHellmanLibreSSLDH``: A typical LibreSSL implementation.
-* ``DiffieHellmanLibreSSLBN``: The intermediate implementation which is based on LibreSSL BIGNUM without using the DH functions.
-* ``DiffieHellmanBoost``: The C++ implementation which uses boost::multiprecision::cpp_int for big number operations.
-* ``Tester``: The tester class.
+* ``DiffieHellman`` is an interface for the DH key exchange implementations. Also, it provides the factory method to create an appropriate instance.
+* ``DiffieHellmanOpenSSL`` is a typical OpenSSL DH key exchange implementation.
+* ``DiffieHellmanLibreSSLDH`` is  a typical LibreSSL DH key exchange implementation.
+* ``DiffieHellmanLibreSSLBN`` is an intermediate DH key exchange implementation which is based on LibreSSL BIGNUM without using the DH functions.
+* ``DiffieHellmanBoost`` is a C++ DH key exchange implementation which uses boost::multiprecision::cpp_int for big number operations.
+* ``ECDiffieHellman`` is an interface for ECDH key exchange implementations. Also, it provides the factory method to create an appropriate instance. 
+* ``ECDiffieHellmanOpenSSL`` is a typical OpenSSL ECDH key exchange implementation.
+* ``ECDiffieHellmanLibreSSL`` is a typical LibreSSL ECDH key exchange implementation.
+* ``DHTester`` is a DH key exchange tester class.
+* ``ECDHTester`` is a ECDH key exchange tester class.
 
 ## Building
 The project uses ``std::format``, ``using enum`` and other modern C++ features so you need latest compilers for it. See the links below.
@@ -130,18 +134,8 @@ You might not need to specify the Boost C++, OpenSSL/LibreSSL folders if the lib
 
 ## Testing
 Run the program to start the tests. You can explicitly specify the prime length in bits and the generator. See examples below:
-* ``diffie-hellman-cpp`` The prime length is 512; the generator is 2.
-* ``diffie-hellman-cpp 512 5`` The prime length is 512; the generator is 5.
-* ``diffie-hellman-cpp 256 5`` The prime length is 256 (too small for OpenSSL!); the generator is 5.
-
-The following tests are performed if compiled with OpenSSL support:
-* Alice OpenSSL <-> Bob OpenSSL
-* Alice OpenSSL <-> Bob Boost cpp_int
-* Alice Boost cpp_int <-> Bob OpenSSL
-
-The following tests are performed if compiled with LibreSSL support:
-* Alice LibreSSL DH <-> Bob LibreSSL DH
-* Alice LibreSSL DH <-> Bob LibreSSL BIGNUM
-* Alice LibreSSL BIGNUM <-> Bob LibreSSL DH
-* Alice LibreSSL DH <-> Bob Boost cpp_int
-* Alice Boost cpp_int <-> Bob LibreSSL DH
+* ``diffie-hellman-cpp dh``  DH key exchange. The prime length is 512; the generator is 2.
+* ``diffie-hellman-cpp dh 512 5`` DH key exchange. The prime length is 512; the generator is 5.
+* ``diffie-hellman-cpp dh 256`` DH key exchange. The prime length is 256 (too small for OpenSSL!); the generator is 2.
+* ``diffie-hellman-cpp ecdh`` ECDH key exchange. The curve name is ``secp384r1``.
+* ``diffie-hellman-cpp ecdh sect571r1`` ECDH key exchange. The curve name is ``sect571r1``.

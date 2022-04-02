@@ -11,14 +11,19 @@
 #include "base-helpers.h"
 #include "diffie-hellman.h"
 
-#include "tester.h"
+#include "dh-tester.h"
 
-Tester::Tester(int primeLengthInBits, int generator)
+DHTester::DHTester(int primeLengthInBits, int generator)
 : primeLengthInBits_(primeLengthInBits)
 , generator_(generator) {
 }
 
-void Tester::Run() {
+void DHTester::Run() {
+
+  std::cout << "--------------------------------------------------------" << std::endl;
+  std::cout << "PRIME LENGTH (bits): " << primeLengthInBits_ << std::endl;
+  std::cout << "GENERATOR: " << generator_ << std::endl;
+
   using Impl = DiffieHellman::Implementation;
 
   std::vector<std::pair<Impl, Impl>> tests = {
@@ -50,7 +55,7 @@ void Tester::Run() {
   }
 }
 
-Result Tester::DoTest(DiffieHellman* alice, DiffieHellman* bob) {
+Result DHTester::DoTest(DiffieHellman* alice, DiffieHellman* bob) {
   Result result;
   
   std::cout << "Generating the prime (may be slow)..." << std::endl;
@@ -136,7 +141,7 @@ Result Tester::DoTest(DiffieHellman* alice, DiffieHellman* bob) {
   return {Result::Success};
 }
 
-void Tester::PrintObjectLength(std::string_view comment,
+void DHTester::PrintObjectLength(std::string_view comment,
     std::tuple<int, int> bitsBytes, const std::string& hex) {
   std::string line = std::format("{} (bits/bytes/hex digits): {}/{}/{}",
     comment, std::get<0>(bitsBytes), std::get<1>(bitsBytes), hex.size());

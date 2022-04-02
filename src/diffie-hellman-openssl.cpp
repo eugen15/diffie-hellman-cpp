@@ -15,7 +15,6 @@
 #include "diffie-hellman-openssl.h"
 
 DiffieHellmanOpenSSL::DiffieHellmanOpenSSL() {
-
 }
 
 DiffieHellmanOpenSSL::~DiffieHellmanOpenSSL() {

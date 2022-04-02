@@ -8,10 +8,10 @@
 
 #include "diffie-hellman.h"
 
-class Tester final {
+class DHTester final {
  public:
   // Construct an instance, sets the prime length and generator number.
-  Tester(int primeLengthInBits, int generator);
+  DHTester(int primeLengthInBits, int generator);
 
   // Runs predefined tests.
   void Run();

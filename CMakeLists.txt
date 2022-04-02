@@ -56,7 +56,9 @@ set(SOURCES
   src/base-helpers.cpp
   src/diffie-hellman.cpp
   src/diffie-hellman-boost.cpp
-  src/tester.cpp
+  src/ec-diffie-hellman.cpp
+  src/dh-tester.cpp
+  src/ecdh-tester.cpp
   src/main.cpp
 )
 
@@ -67,7 +69,9 @@ set(HEADERS
   src/primes.h
   src/diffie-hellman.h
   src/diffie-hellman-boost.h
-  src/tester.h
+  src/ec-diffie-hellman.h
+  src/dh-tester.h
+  src/ecdh-tester.h
 )
 
 option(USE_OPENSSL "Use OpenSSL 3.x.x instead of LibreSSL 3.x.x" OFF)
@@ -76,11 +80,13 @@ if(USE_OPENSSL)
     ${SOURCES}
     src/openssl-helpers.cpp
     src/diffie-hellman-openssl.cpp
+    src/ec-diffie-hellman-openssl.cpp
   )
   set(HEADERS
     ${HEADERS}
     src/openssl-helpers.h
     src/diffie-hellman-openssl.h
+    src/ec-diffie-hellman-openssl.h
   )
   add_definitions(-DUSE_OPENSSL)
 else()
@@ -89,12 +95,14 @@ else()
     src/libressl-helpers.cpp
     src/diffie-hellman-libressl-dh.cpp
     src/diffie-hellman-libressl-bn.cpp
+    src/ec-diffie-hellman-libressl.cpp
   )
   set(HEADERS
     ${HEADERS}
     src/libressl-helpers.h
     src/diffie-hellman-libressl-dh.h
     src/diffie-hellman-libressl-bn.h
+    src/ec-diffie-hellman-libressl.h
   )
 endif()
 
