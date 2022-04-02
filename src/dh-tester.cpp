@@ -44,7 +44,7 @@ void DHTester::Run() {
       std::cout << "--------------------------------------------------------" << std::endl;
 
       std::string testDescription = std::format("ALICE {} <-> BOB {}",
-        alice->GetImplementaionName(), bob->GetImplementaionName());
+        alice->GetImplementationName(), bob->GetImplementationName());
       std::cout << testDescription << std::endl;
 
       auto result = DoTest(alice.get(), bob.get());

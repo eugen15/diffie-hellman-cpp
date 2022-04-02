@@ -19,8 +19,8 @@ DiffieHellmanLibreSSLDH::DiffieHellmanLibreSSLDH()
 DiffieHellmanLibreSSLDH::~DiffieHellmanLibreSSLDH() {
 }
 
-std::string_view DiffieHellmanLibreSSLDH::GetImplementaionName() const {
-  return "libressl DH";
+std::string_view DiffieHellmanLibreSSLDH::GetImplementationName() const {
+  return "LibreSSL DH";
 }
 
 Result DiffieHellmanLibreSSLDH::GenerateParameters(int primeLengthInBits, int generator) {

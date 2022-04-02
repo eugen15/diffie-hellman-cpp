@@ -22,7 +22,7 @@ class DiffieHellmanLibreSSLBN : public DiffieHellman {
   DiffieHellmanLibreSSLBN();
   virtual ~DiffieHellmanLibreSSLBN();
 
-  std::string_view GetImplementaionName() const override;
+  std::string_view GetImplementationName() const override;
 
   Result GenerateParameters(int primeLengthInBits, int generator) override;
 

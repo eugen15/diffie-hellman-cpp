@@ -32,7 +32,7 @@ class DiffieHellman {
   virtual ~DiffieHellman() {}
 
   // Gets implementation name.
-  virtual std::string_view GetImplementaionName() const = 0;
+  virtual std::string_view GetImplementationName() const = 0;
 
   // Generates a safe prime with the specified length and
   // sets the generator.

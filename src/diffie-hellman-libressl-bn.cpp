@@ -17,8 +17,8 @@ DiffieHellmanLibreSSLBN::DiffieHellmanLibreSSLBN() {
 DiffieHellmanLibreSSLBN::~DiffieHellmanLibreSSLBN() {
 }
 
-std::string_view DiffieHellmanLibreSSLBN::GetImplementaionName() const {
-  return "libressl BIGNUM";
+std::string_view DiffieHellmanLibreSSLBN::GetImplementationName() const {
+  return "LibreSSL BIGNUM DH";
 }
 
 Result DiffieHellmanLibreSSLBN::GenerateParameters(int primeLengthInBits, int generator) {

@@ -21,8 +21,8 @@ DiffieHellmanOpenSSL::~DiffieHellmanOpenSSL() {
 
 }
 
-std::string_view DiffieHellmanOpenSSL::GetImplementaionName() const {
-  return "openssl";
+std::string_view DiffieHellmanOpenSSL::GetImplementationName() const {
+  return "OpenSSL DH";
 }
 
 Result DiffieHellmanOpenSSL::GenerateParameters(int primeLengthInBits, int generator) {

@@ -39,8 +39,8 @@ DiffieHellmanBoost::DiffieHellmanBoost() {
 DiffieHellmanBoost::~DiffieHellmanBoost() {
 }
 
-std::string_view DiffieHellmanBoost::GetImplementaionName() const {
-  return "boost cpp_int";
+std::string_view DiffieHellmanBoost::GetImplementationName() const {
+  return "boost cpp_int DH";
 }
 
 Result DiffieHellmanBoost::GenerateParameters(int primeLengthInBits, int generator) {

@@ -20,7 +20,7 @@ class DiffieHellmanLibreSSLDH : public DiffieHellman {
   DiffieHellmanLibreSSLDH();
   ~DiffieHellmanLibreSSLDH() override;
   
-  std::string_view GetImplementaionName() const override;
+  std::string_view GetImplementationName() const override;
 
   Result GenerateParameters(int primeLengthInBits, int generator) override;
 

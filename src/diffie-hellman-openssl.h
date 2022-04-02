@@ -20,7 +20,7 @@ class DiffieHellmanOpenSSL : public DiffieHellman {
   DiffieHellmanOpenSSL();
   ~DiffieHellmanOpenSSL() override;
   
-  std::string_view GetImplementaionName() const override;
+  std::string_view GetImplementationName() const override;
 
   Result GenerateParameters(int primeLengthInBits, int generator) override;
 
